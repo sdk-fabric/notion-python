@@ -6,14 +6,15 @@ https://sdkgen.app
 from pydantic import BaseModel, Field, GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
+import datetime
 from .database_icon import DatabaseIcon
 from .database_cover import DatabaseCover
 from .database_title import DatabaseTitle
 class Database(BaseModel):
     object: Optional[str] = Field(default=None, alias="object")
     id: Optional[str] = Field(default=None, alias="id")
-    created_time: Optional[str] = Field(default=None, alias="created_time")
-    last_edited_time: Optional[str] = Field(default=None, alias="last_edited_time")
+    created_time: Optional[datetime.datetime] = Field(default=None, alias="created_time")
+    last_edited_time: Optional[datetime.datetime] = Field(default=None, alias="last_edited_time")
     icon: Optional[DatabaseIcon] = Field(default=None, alias="icon")
     cover: Optional[DatabaseCover] = Field(default=None, alias="cover")
     url: Optional[str] = Field(default=None, alias="url")
