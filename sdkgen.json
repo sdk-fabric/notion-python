@@ -2,7 +2,7 @@
   "type": "client-python",
   "require": {
     "sdkfabric/notion": {
-      "target": "./src"
+      "target": "./src/sdk"
     }
   }
 }
