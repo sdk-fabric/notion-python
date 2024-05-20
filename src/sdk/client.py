@@ -8,21 +8,28 @@ import sdkgen
 from requests import RequestException
 from typing import List
 
-from .users_tag import UsersTag
-from .databases_tag import DatabasesTag
+from .user_tag import UserTag
+from .database_tag import DatabaseTag
+from .page_tag import PageTag
 
 class Client(sdkgen.ClientAbstract):
     def __init__(self, base_url: str, credentials: sdkgen.CredentialsInterface):
         super().__init__(base_url, credentials)
 
-    def users(self) -> UsersTag:
-        return UsersTag(
+    def user(self) -> UserTag:
+        return UserTag(
             self.http_client,
             self.parser
         )
 
-    def databases(self) -> DatabasesTag:
-        return DatabasesTag(
+    def database(self) -> DatabaseTag:
+        return DatabaseTag(
+            self.http_client,
+            self.parser
+        )
+
+    def page(self) -> PageTag:
+        return PageTag(
             self.http_client,
             self.parser
         )
