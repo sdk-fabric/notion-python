@@ -8,6 +8,8 @@ from pydantic_core import CoreSchema, core_schema
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
 import datetime
 from .user import User
+from .database_id import DatabaseId
+from .page_id import PageId
 class Page(BaseModel):
     object: Optional[str] = Field(default=None, alias="object")
     id: Optional[str] = Field(default=None, alias="id")
@@ -17,7 +19,9 @@ class Page(BaseModel):
     last_edited_by: Optional[User] = Field(default=None, alias="last_edited_by")
     cover: Optional[str] = Field(default=None, alias="cover")
     icon: Optional[str] = Field(default=None, alias="icon")
-    parent: Optional[str] = Field(default=None, alias="parent")
+    parent: Optional[Union[DatabaseId, PageId]] = Field(default=None, alias="parent")
     in_trash: Optional[bool] = Field(default=None, alias="in_trash")
     properties: Optional[Dict[str, Any]] = Field(default=None, alias="properties")
+    url: Optional[str] = Field(default=None, alias="url")
+    public_url: Optional[str] = Field(default=None, alias="public_url")
     pass
