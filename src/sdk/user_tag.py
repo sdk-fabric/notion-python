@@ -7,6 +7,9 @@ import requests
 import sdkgen
 from requests import RequestException
 from typing import List
+from typing import Dict
+from typing import Any
+from urllib.parse import parse_qs
 
 from .user import User
 from .user_collection import UserCollection
@@ -24,46 +27,62 @@ class UserTag(sdkgen.TagAbstract):
             path_params = {}
 
             query_params = {}
-            query_params["start_cursor"] = start_cursor
-            query_params["page_size"] = page_size
+            query_params['start_cursor'] = start_cursor
+            query_params['page_size'] = page_size
 
             query_struct_names = []
 
-            url = self.parser.url("/v1/users", path_params)
+            url = self.parser.url('/v1/users', path_params)
 
-            headers = {}
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
 
-            response = self.http_client.get(url, headers=headers, params=self.parser.query(query_params, query_struct_names))
+
+
+            response = self.http_client.request('GET', url, **options)
 
             if response.status_code >= 200 and response.status_code < 300:
-                return UserCollection.model_validate_json(json_data=response.content)
+                data = UserCollection.model_validate_json(json_data=response.content)
 
+                return data
 
-            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
+            statusCode = response.status_code
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
         except RequestException as e:
-            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
 
     def get(self, user_id: str) -> User:
+        """
+        Retrieves a User using the ID specified.
+        """
         try:
             path_params = {}
-            path_params["user_id"] = user_id
+            path_params['user_id'] = user_id
 
             query_params = {}
 
             query_struct_names = []
 
-            url = self.parser.url("/v1/users/:user_id", path_params)
+            url = self.parser.url('/v1/users/:user_id', path_params)
 
-            headers = {}
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
 
-            response = self.http_client.get(url, headers=headers, params=self.parser.query(query_params, query_struct_names))
+
+
+            response = self.http_client.request('GET', url, **options)
 
             if response.status_code >= 200 and response.status_code < 300:
-                return User.model_validate_json(json_data=response.content)
+                data = User.model_validate_json(json_data=response.content)
 
+                return data
 
-            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
+            statusCode = response.status_code
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
         except RequestException as e:
-            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
 
 

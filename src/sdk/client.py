@@ -7,6 +7,9 @@ import requests
 import sdkgen
 from requests import RequestException
 from typing import List
+from typing import Dict
+from typing import Any
+from urllib.parse import parse_qs
 
 from .user_tag import UserTag
 from .database_tag import DatabaseTag
@@ -40,3 +43,7 @@ class Client(sdkgen.ClientAbstract):
     def build(token: str):
         return Client("https://api.notion.com", sdkgen.HttpBearer(token))
 
+
+    @staticmethod
+    def buildAnonymous():
+        return Client("https://api.notion.com", sdkgen.Anonymous())
