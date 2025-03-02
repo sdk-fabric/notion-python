@@ -7,21 +7,28 @@ from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
 import datetime
-from .page import Page
+from .block_bookmark import BlockBookmark
+from .parent_id import ParentId
 from .user import User
+from .database_parent_id import DatabaseParentId
+from .page_parent_id import PageParentId
+from .block_parent_id import BlockParentId
+from .workspace_parent_id import WorkspaceParentId
 
 
 class Block(BaseModel):
     object: Optional[str] = Field(default=None, alias="object")
     id: Optional[str] = Field(default=None, alias="id")
-    parent: Optional[Page] = Field(default=None, alias="parent")
-    created_time: Optional[datetime.datetime] = Field(default=None, alias="created_time")
-    last_edited_time: Optional[datetime.datetime] = Field(default=None, alias="last_edited_time")
-    created_by: Optional[User] = Field(default=None, alias="created_by")
-    last_edited_by: Optional[User] = Field(default=None, alias="last_edited_by")
-    has_children: Optional[bool] = Field(default=None, alias="has_children")
-    in_trash: Optional[bool] = Field(default=None, alias="in_trash")
+    parent: Optional[Annotated[Union[Annotated[DatabaseParentId, Tag('database_id')], Annotated[PageParentId, Tag('page_id')], Annotated[BlockParentId, Tag('block_id')], Annotated[WorkspaceParentId, Tag('workspace')]], Field(discriminator='type')]
+] = Field(default=None, alias="parent")
     type: Optional[str] = Field(default=None, alias="type")
+    created_time: Optional[datetime.datetime] = Field(default=None, alias="created_time")
+    created_by: Optional[User] = Field(default=None, alias="created_by")
+    last_edited_time: Optional[datetime.datetime] = Field(default=None, alias="last_edited_time")
+    last_edited_by: Optional[User] = Field(default=None, alias="last_edited_by")
+    archived: Optional[bool] = Field(default=None, alias="archived")
+    in_trash: Optional[bool] = Field(default=None, alias="in_trash")
+    has_children: Optional[bool] = Field(default=None, alias="has_children")
     pass
 
 
