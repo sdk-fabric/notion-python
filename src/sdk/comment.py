@@ -12,13 +12,16 @@ from .database_parent_id import DatabaseParentId
 from .page_parent_id import PageParentId
 from .block_parent_id import BlockParentId
 from .workspace_parent_id import WorkspaceParentId
+from .rich_text_equation import RichTextEquation
+from .rich_text_text import RichTextText
 
 
 class Comment(BaseModel):
     parent: Optional[Annotated[Union[Annotated[DatabaseParentId, Tag('database_id')], Annotated[PageParentId, Tag('page_id')], Annotated[BlockParentId, Tag('block_id')], Annotated[WorkspaceParentId, Tag('workspace')]], Field(discriminator='type')]
 ] = Field(default=None, alias="parent")
     discussion_id: Optional[str] = Field(default=None, alias="discussion_id")
-    rich_text: Optional[RichText] = Field(default=None, alias="rich_text")
+    rich_text: Optional[Annotated[Union[Annotated[RichTextEquation, Tag('equation')], Annotated[RichTextText, Tag('text')]], Field(discriminator='type')]
+] = Field(default=None, alias="rich_text")
     pass
 
 

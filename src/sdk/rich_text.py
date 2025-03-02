@@ -6,6 +6,8 @@ https://sdkgen.app
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from .rich_text_equation import RichTextEquation
+from .rich_text_text import RichTextText
 from .rich_text_annotation import RichTextAnnotation
 
 

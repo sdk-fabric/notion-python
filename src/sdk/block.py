@@ -8,6 +8,24 @@ from pydantic_core import CoreSchema, core_schema
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
 import datetime
 from .block_bookmark import BlockBookmark
+from .block_breadcrumb import BlockBreadcrumb
+from .block_bulleted_list_item import BlockBulletedListItem
+from .block_callout import BlockCallout
+from .block_child_database import BlockChildDatabase
+from .block_child_page import BlockChildPage
+from .block_code import BlockCode
+from .block_divider import BlockDivider
+from .block_embed import BlockEmbed
+from .block_equation import BlockEquation
+from .block_file import BlockFile
+from .block_heading_1 import BlockHeading
+from .block_heading_2 import BlockHeading
+from .block_heading_3 import BlockHeading
+from .block_image import BlockImage
+from .block_numbered_list_item import BlockNumberedListItem
+from .block_paragraph import BlockParagraph
+from .block_pdf import BlockPDF
+from .block_quote import BlockQuote
 from .parent_id import ParentId
 from .user import User
 from .database_parent_id import DatabaseParentId
