@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
 from .bookmark import Bookmark
 
 
+# Bookmark block.
 class BlockBookmark(Block):
+    type: Literal["bookmark"] = Field(alias="type")
     bookmark: Optional[Bookmark] = Field(default=None, alias="bookmark")
-    pass
 
 

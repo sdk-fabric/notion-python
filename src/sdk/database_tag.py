@@ -11,18 +11,58 @@ from typing import Dict
 from typing import Any
 from urllib.parse import parse_qs
 
+from .create_database_request import CreateDatabaseRequest
 from .database import Database
 from .error import Error
 from .error_exception import ErrorException
+from .update_database_request import UpdateDatabaseRequest
 
 class DatabaseTag(sdkgen.TagAbstract):
     def __init__(self, http_client: requests.Session, parser: sdkgen.Parser):
         super().__init__(http_client, parser)
 
 
+    def create(self, payload: CreateDatabaseRequest) -> Database:
+        """
+        Creates a database and its initial data source as a child of a page or the workspace.
+        """
+        try:
+            path_params = {}
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/databases', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['json'] = payload.model_dump(by_alias=True)
+
+            options['headers']['Content-Type'] = 'application/json'
+
+            response = self.http_client.request('POST', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = Database.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode >= 0 and statusCode <= 999:
+                data = Error.model_validate_json(json_data=response.content)
+
+                raise ErrorException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
     def get(self, database_id: str) -> Database:
         """
-        Retrieves a database object — information that describes the structure and columns of a database — for a provided database ID. The response adheres to any limits to an integration’s capabilities.
+        Retrieves a database object, a container for one or more data sources, for a provided database ID. Use Retrieve a data source to read its property schema.
         """
         try:
             path_params = {}
@@ -32,7 +72,7 @@ class DatabaseTag(sdkgen.TagAbstract):
 
             query_struct_names = []
 
-            url = self.parser.url('/v1/databases/:database_id', path_params)
+            url = self.parser.url('/databases/:database_id', path_params)
 
             options = {}
             options['headers'] = {}
@@ -41,6 +81,45 @@ class DatabaseTag(sdkgen.TagAbstract):
 
 
             response = self.http_client.request('GET', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = Database.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode >= 0 and statusCode <= 999:
+                data = Error.model_validate_json(json_data=response.content)
+
+                raise ErrorException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def update(self, database_id: str, payload: UpdateDatabaseRequest) -> Database:
+        """
+        Updates the attributes (title, description, icon, cover, parent, inline, trash and lock status) of a database.
+        """
+        try:
+            path_params = {}
+            path_params['database_id'] = database_id
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/databases/:database_id', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['json'] = payload.model_dump(by_alias=True)
+
+            options['headers']['Content-Type'] = 'application/json'
+
+            response = self.http_client.request('PATCH', url, **options)
 
             if response.status_code >= 200 and response.status_code < 300:
                 data = Database.model_validate_json(json_data=response.content)

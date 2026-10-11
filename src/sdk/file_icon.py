@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .icon import Icon
 from .file_object import FileObject
 
 
+# Icon hosted by Notion.
 class FileIcon(Icon):
+    type: Literal["file"] = Field(alias="type")
     file: Optional[FileObject] = Field(default=None, alias="file")
-    pass
 
 

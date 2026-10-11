@@ -5,12 +5,13 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .parent_id import ParentId
 
 
+# Parent is the workspace.
 class WorkspaceParentId(ParentId):
+    type: Literal["workspace"] = Field(alias="type")
     workspace: Optional[bool] = Field(default=None, alias="workspace")
-    pass
 
 

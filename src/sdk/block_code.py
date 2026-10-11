@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
 from .code import Code
 
 
+# Code block.
 class BlockCode(Block):
+    type: Literal["code"] = Field(alias="type")
     code: Optional[Code] = Field(default=None, alias="code")
-    pass
 
 

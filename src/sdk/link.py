@@ -5,11 +5,11 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 
 
+# An inline link.
 class Link(BaseModel):
     url: Optional[str] = Field(default=None, alias="url")
-    pass
 
 

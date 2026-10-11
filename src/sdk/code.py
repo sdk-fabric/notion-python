@@ -5,14 +5,17 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .rich_text import RichText
+from .rich_text_equation import RichTextEquation
+from .rich_text_mention import RichTextMention
+from .rich_text_text import RichTextText
 
 
+# Content of a code block.
 class Code(BaseModel):
-    caption: Optional[List[RichText]] = Field(default=None, alias="caption")
-    rich_text: Optional[List[RichText]] = Field(default=None, alias="rich_text")
+    caption: List[Annotated[Union["RichTextEquation", "RichTextMention", "RichTextText"], Field(discriminator="type")]] = Field(alias="caption")
     language: Optional[str] = Field(default=None, alias="language")
-    pass
+    rich_text: List[Annotated[Union["RichTextEquation", "RichTextMention", "RichTextText"], Field(discriminator="type")]] = Field(alias="rich_text")
 
 

@@ -5,11 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
+from .empty_object import EmptyObject
 
 
+# Breadcrumb block.
 class BlockBreadcrumb(Block):
-    pass
+    type: Literal["breadcrumb"] = Field(alias="type")
+    breadcrumb: Optional[EmptyObject] = Field(default=None, alias="breadcrumb")
 
 

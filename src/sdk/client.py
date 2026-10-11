@@ -11,16 +11,24 @@ from typing import Dict
 from typing import Any
 from urllib.parse import parse_qs
 
-from .user_tag import UserTag
+from .block_tag import BlockTag
+from .data_source_tag import DataSourceTag
 from .database_tag import DatabaseTag
 from .page_tag import PageTag
+from .user_tag import UserTag
 
 class Client(sdkgen.ClientAbstract):
     def __init__(self, base_url: str, credentials: sdkgen.CredentialsInterface):
         super().__init__(base_url, credentials)
 
-    def user(self) -> UserTag:
-        return UserTag(
+    def block(self) -> BlockTag:
+        return BlockTag(
+            self.http_client,
+            self.parser
+        )
+
+    def data_source(self) -> DataSourceTag:
+        return DataSourceTag(
             self.http_client,
             self.parser
         )
@@ -37,13 +45,19 @@ class Client(sdkgen.ClientAbstract):
             self.parser
         )
 
+    def user(self) -> UserTag:
+        return UserTag(
+            self.http_client,
+            self.parser
+        )
+
 
 
     @staticmethod
     def build(token: str):
-        return Client("https://api.notion.com", sdkgen.HttpBearer(token))
+        return Client("https://api.notion.com/v1", sdkgen.HttpBearer(token))
 
 
     @staticmethod
     def buildAnonymous():
-        return Client("https://api.notion.com", sdkgen.Anonymous())
+        return Client("https://api.notion.com/v1", sdkgen.Anonymous())

@@ -5,12 +5,13 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .parent_id import ParentId
 
 
+# Parent is a database.
 class DatabaseParentId(ParentId):
+    type: Literal["database_id"] = Field(alias="type")
     database_id: Optional[str] = Field(default=None, alias="database_id")
-    pass
 
 

@@ -5,37 +5,43 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 import datetime
+from .page_or_data_source import PageOrDataSource
+from .cover import Cover
 from .user import User
-from .file_object import FileObject
 from .icon import Icon
 from .parent_id import ParentId
+from .page_property_value import PagePropertyValue
+from .custom_emoji_icon import CustomEmojiIcon
 from .emoji_icon import EmojiIcon
-from .file_icon import FileIcon
 from .external_icon import ExternalIcon
+from .file_icon import FileIcon
+from .file_upload_icon import FileUploadIcon
+from .noticon_icon import NoticonIcon
+from .agent_parent_id import AgentParentId
+from .block_parent_id import BlockParentId
+from .data_source_parent_id import DataSourceParentId
 from .database_parent_id import DatabaseParentId
 from .page_parent_id import PageParentId
-from .block_parent_id import BlockParentId
 from .workspace_parent_id import WorkspaceParentId
 
 
-class Page(BaseModel):
-    object: Optional[str] = Field(default=None, alias="object")
-    id: Optional[str] = Field(default=None, alias="id")
-    created_time: Optional[datetime.datetime] = Field(default=None, alias="created_time")
-    last_edited_time: Optional[datetime.datetime] = Field(default=None, alias="last_edited_time")
+# The Page object contains the page property values of a single Notion page.
+class Page(PageOrDataSource):
+    object: Literal["page"] = Field(alias="object")
+    cover: Optional[Cover] = Field(default=None, alias="cover")
     created_by: Optional[User] = Field(default=None, alias="created_by")
-    last_edited_by: Optional[User] = Field(default=None, alias="last_edited_by")
-    cover: Optional[FileObject] = Field(default=None, alias="cover")
-    icon: Optional[Annotated[Union[Annotated[EmojiIcon, Tag('emoji')], Annotated[FileIcon, Tag('file')], Annotated[ExternalIcon, Tag('external')]], Field(discriminator='type')]
-] = Field(default=None, alias="icon")
+    created_time: Optional[datetime.datetime] = Field(default=None, alias="created_time")
+    icon: Annotated[Union["CustomEmojiIcon", "EmojiIcon", "ExternalIcon", "FileIcon", "FileUploadIcon", "NoticonIcon"], Field(discriminator="type")] = Field(alias="icon")
     in_trash: Optional[bool] = Field(default=None, alias="in_trash")
-    properties: Optional[Dict[str, Any]] = Field(default=None, alias="properties")
-    parent: Optional[Annotated[Union[Annotated[DatabaseParentId, Tag('database_id')], Annotated[PageParentId, Tag('page_id')], Annotated[BlockParentId, Tag('block_id')], Annotated[WorkspaceParentId, Tag('workspace')]], Field(discriminator='type')]
-] = Field(default=None, alias="parent")
-    url: Optional[str] = Field(default=None, alias="url")
+    is_archived: Optional[bool] = Field(default=None, alias="is_archived")
+    is_locked: Optional[bool] = Field(default=None, alias="is_locked")
+    last_edited_by: Optional[User] = Field(default=None, alias="last_edited_by")
+    last_edited_time: Optional[datetime.datetime] = Field(default=None, alias="last_edited_time")
+    parent: Annotated[Union["AgentParentId", "BlockParentId", "DataSourceParentId", "DatabaseParentId", "PageParentId", "WorkspaceParentId"], Field(discriminator="type")] = Field(alias="parent")
+    properties: Optional[Dict[str, PagePropertyValue]] = Field(default=None, alias="properties")
     public_url: Optional[str] = Field(default=None, alias="public_url")
-    pass
+    url: Optional[str] = Field(default=None, alias="url")
 
 

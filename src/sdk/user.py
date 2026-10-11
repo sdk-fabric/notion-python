@@ -5,17 +5,19 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
+from .user_bot import UserBot
 from .person import Person
 
 
+# A user in a Notion workspace: a member, guest or bot (integration).
 class User(BaseModel):
-    object: Optional[str] = Field(default=None, alias="object")
-    id: Optional[str] = Field(default=None, alias="id")
-    type: Optional[str] = Field(default=None, alias="type")
-    person: Optional[Person] = Field(default=None, alias="person")
-    name: Optional[str] = Field(default=None, alias="name")
     avatar_url: Optional[str] = Field(default=None, alias="avatar_url")
-    pass
+    bot: Optional[UserBot] = Field(default=None, alias="bot")
+    id: Optional[str] = Field(default=None, alias="id")
+    name: Optional[str] = Field(default=None, alias="name")
+    object: Optional[str] = Field(default=None, alias="object")
+    person: Optional[Person] = Field(default=None, alias="person")
+    type: Optional[str] = Field(default=None, alias="type")
 
 

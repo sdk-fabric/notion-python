@@ -5,12 +5,13 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .parent_id import ParentId
 
 
+# Parent is a page.
 class PageParentId(ParentId):
+    type: Literal["page_id"] = Field(alias="type")
     page_id: Optional[str] = Field(default=None, alias="page_id")
-    pass
 
 

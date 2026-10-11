@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
-from .file_object import FileObject
+from .file import File
 
 
+# Image block.
 class BlockImage(Block):
-    image: Optional[FileObject] = Field(default=None, alias="image")
-    pass
+    type: Literal["image"] = Field(alias="type")
+    image: Optional[File] = Field(default=None, alias="image")
 
 

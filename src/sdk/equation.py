@@ -5,11 +5,11 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 
 
+# A LaTeX equation expression.
 class Equation(BaseModel):
     expression: Optional[str] = Field(default=None, alias="expression")
-    pass
 
 

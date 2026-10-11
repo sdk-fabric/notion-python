@@ -5,12 +5,16 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 
 
+# Error response returned by the Notion API for any non-2xx status.
 class Error(BaseModel):
+    additional_data: Optional[Dict[str, Any]] = Field(default=None, alias="additional_data")
     code: Optional[str] = Field(default=None, alias="code")
     message: Optional[str] = Field(default=None, alias="message")
-    pass
+    object: Optional[str] = Field(default=None, alias="object")
+    request_id: Optional[str] = Field(default=None, alias="request_id")
+    status: Optional[int] = Field(default=None, alias="status")
 
 

@@ -5,48 +5,29 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 import datetime
-from .block_bookmark import BlockBookmark
-from .block_breadcrumb import BlockBreadcrumb
-from .block_bulleted_list_item import BlockBulletedListItem
-from .block_callout import BlockCallout
-from .block_child_database import BlockChildDatabase
-from .block_child_page import BlockChildPage
-from .block_code import BlockCode
-from .block_divider import BlockDivider
-from .block_embed import BlockEmbed
-from .block_equation import BlockEquation
-from .block_file import BlockFile
-from .block_heading_1 import BlockHeading
-from .block_heading_2 import BlockHeading
-from .block_heading_3 import BlockHeading
-from .block_image import BlockImage
-from .block_numbered_list_item import BlockNumberedListItem
-from .block_paragraph import BlockParagraph
-from .block_pdf import BlockPDF
-from .block_quote import BlockQuote
-from .parent_id import ParentId
 from .user import User
+from .parent_id import ParentId
+from .agent_parent_id import AgentParentId
+from .block_parent_id import BlockParentId
+from .data_source_parent_id import DataSourceParentId
 from .database_parent_id import DatabaseParentId
 from .page_parent_id import PageParentId
-from .block_parent_id import BlockParentId
 from .workspace_parent_id import WorkspaceParentId
 
 
+# A block object represents a piece of content within Notion.
 class Block(BaseModel):
-    object: Optional[str] = Field(default=None, alias="object")
-    id: Optional[str] = Field(default=None, alias="id")
-    parent: Optional[Annotated[Union[Annotated[DatabaseParentId, Tag('database_id')], Annotated[PageParentId, Tag('page_id')], Annotated[BlockParentId, Tag('block_id')], Annotated[WorkspaceParentId, Tag('workspace')]], Field(discriminator='type')]
-] = Field(default=None, alias="parent")
-    type: Optional[str] = Field(default=None, alias="type")
-    created_time: Optional[datetime.datetime] = Field(default=None, alias="created_time")
     created_by: Optional[User] = Field(default=None, alias="created_by")
-    last_edited_time: Optional[datetime.datetime] = Field(default=None, alias="last_edited_time")
-    last_edited_by: Optional[User] = Field(default=None, alias="last_edited_by")
-    archived: Optional[bool] = Field(default=None, alias="archived")
-    in_trash: Optional[bool] = Field(default=None, alias="in_trash")
+    created_time: Optional[datetime.datetime] = Field(default=None, alias="created_time")
     has_children: Optional[bool] = Field(default=None, alias="has_children")
-    pass
+    id: Optional[str] = Field(default=None, alias="id")
+    in_trash: Optional[bool] = Field(default=None, alias="in_trash")
+    last_edited_by: Optional[User] = Field(default=None, alias="last_edited_by")
+    last_edited_time: Optional[datetime.datetime] = Field(default=None, alias="last_edited_time")
+    object: Optional[str] = Field(default=None, alias="object")
+    parent: Annotated[Union["AgentParentId", "BlockParentId", "DataSourceParentId", "DatabaseParentId", "PageParentId", "WorkspaceParentId"], Field(discriminator="type")] = Field(alias="parent")
+    type: str = Field(alias="type")
 
 

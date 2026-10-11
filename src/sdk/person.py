@@ -5,11 +5,12 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 
 
+# Details about a person user.
 class Person(BaseModel):
     email: Optional[str] = Field(default=None, alias="email")
-    pass
+    email_verified: Optional[bool] = Field(default=None, alias="email_verified")
 
 

@@ -5,19 +5,24 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
-from .rich_text import RichText
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .icon import Icon
+from .rich_text import RichText
+from .custom_emoji_icon import CustomEmojiIcon
 from .emoji_icon import EmojiIcon
-from .file_icon import FileIcon
 from .external_icon import ExternalIcon
+from .file_icon import FileIcon
+from .file_upload_icon import FileUploadIcon
+from .noticon_icon import NoticonIcon
+from .rich_text_equation import RichTextEquation
+from .rich_text_mention import RichTextMention
+from .rich_text_text import RichTextText
 
 
+# Content of a callout block.
 class Callout(BaseModel):
-    rich_text: Optional[List[RichText]] = Field(default=None, alias="rich_text")
-    icon: Optional[Annotated[Union[Annotated[EmojiIcon, Tag('emoji')], Annotated[FileIcon, Tag('file')], Annotated[ExternalIcon, Tag('external')]], Field(discriminator='type')]
-] = Field(default=None, alias="icon")
     color: Optional[str] = Field(default=None, alias="color")
-    pass
+    icon: Annotated[Union["CustomEmojiIcon", "EmojiIcon", "ExternalIcon", "FileIcon", "FileUploadIcon", "NoticonIcon"], Field(discriminator="type")] = Field(alias="icon")
+    rich_text: List[Annotated[Union["RichTextEquation", "RichTextMention", "RichTextText"], Field(discriminator="type")]] = Field(alias="rich_text")
 
 

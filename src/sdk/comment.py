@@ -5,23 +5,37 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
+import datetime
+from .comment_attachment import CommentAttachment
+from .user import User
+from .comment_display_name import CommentDisplayName
 from .parent_id import ParentId
 from .rich_text import RichText
+from .agent_parent_id import AgentParentId
+from .block_parent_id import BlockParentId
+from .data_source_parent_id import DataSourceParentId
 from .database_parent_id import DatabaseParentId
 from .page_parent_id import PageParentId
-from .block_parent_id import BlockParentId
 from .workspace_parent_id import WorkspaceParentId
 from .rich_text_equation import RichTextEquation
+from .rich_text_mention import RichTextMention
 from .rich_text_text import RichTextText
 
 
+# A comment on a Notion page or block.
 class Comment(BaseModel):
-    parent: Optional[Annotated[Union[Annotated[DatabaseParentId, Tag('database_id')], Annotated[PageParentId, Tag('page_id')], Annotated[BlockParentId, Tag('block_id')], Annotated[WorkspaceParentId, Tag('workspace')]], Field(discriminator='type')]
-] = Field(default=None, alias="parent")
+    attachments: Optional[List[CommentAttachment]] = Field(default=None, alias="attachments")
+    created_by: Optional[User] = Field(default=None, alias="created_by")
+    created_time: Optional[datetime.datetime] = Field(default=None, alias="created_time")
     discussion_id: Optional[str] = Field(default=None, alias="discussion_id")
-    rich_text: Optional[Annotated[Union[Annotated[RichTextEquation, Tag('equation')], Annotated[RichTextText, Tag('text')]], Field(discriminator='type')]
-] = Field(default=None, alias="rich_text")
-    pass
+    display_name: Optional[CommentDisplayName] = Field(default=None, alias="display_name")
+    has_pending_attachments: Optional[bool] = Field(default=None, alias="has_pending_attachments")
+    id: Optional[str] = Field(default=None, alias="id")
+    last_edited_time: Optional[datetime.datetime] = Field(default=None, alias="last_edited_time")
+    object: Optional[str] = Field(default=None, alias="object")
+    original_content_deleted: Optional[bool] = Field(default=None, alias="original_content_deleted")
+    parent: Annotated[Union["AgentParentId", "BlockParentId", "DataSourceParentId", "DatabaseParentId", "PageParentId", "WorkspaceParentId"], Field(discriminator="type")] = Field(alias="parent")
+    rich_text: List[Annotated[Union["RichTextEquation", "RichTextMention", "RichTextText"], Field(discriminator="type")]] = Field(alias="rich_text")
 
 

@@ -5,16 +5,16 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 
 
+# Styling annotations of rich text.
 class RichTextAnnotation(BaseModel):
     bold: Optional[bool] = Field(default=None, alias="bold")
+    code: Optional[bool] = Field(default=None, alias="code")
+    color: Optional[str] = Field(default=None, alias="color")
     italic: Optional[bool] = Field(default=None, alias="italic")
     strikethrough: Optional[bool] = Field(default=None, alias="strikethrough")
     underline: Optional[bool] = Field(default=None, alias="underline")
-    code: Optional[bool] = Field(default=None, alias="code")
-    color: Optional[str] = Field(default=None, alias="color")
-    pass
 
 

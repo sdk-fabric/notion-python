@@ -5,15 +5,54 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
-from .rich_text import RichText
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
+from .rich_text import RichText
+from .block_audio import BlockAudio
+from .block_bookmark import BlockBookmark
+from .block_breadcrumb import BlockBreadcrumb
+from .block_bulleted_list_item import BlockBulletedListItem
+from .block_callout import BlockCallout
+from .block_child_database import BlockChildDatabase
+from .block_child_page import BlockChildPage
+from .block_code import BlockCode
+from .block_column import BlockColumn
+from .block_column_list import BlockColumnList
+from .block_divider import BlockDivider
+from .block_embed import BlockEmbed
+from .block_equation import BlockEquation
+from .block_file import BlockFile
+from .block_heading_four import BlockHeadingFour
+from .block_heading_one import BlockHeadingOne
+from .block_heading_three import BlockHeadingThree
+from .block_heading_two import BlockHeadingTwo
+from .block_image import BlockImage
+from .block_link_preview import BlockLinkPreview
+from .block_link_to_page import BlockLinkToPage
+from .block_meeting_notes import BlockMeetingNotes
+from .block_numbered_list_item import BlockNumberedListItem
+from .block_pdf import BlockPDF
+from .block_paragraph import BlockParagraph
+from .block_quote import BlockQuote
+from .block_synced_block import BlockSyncedBlock
+from .block_tab import BlockTab
+from .block_table import BlockTable
+from .block_table_of_contents import BlockTableOfContents
+from .block_table_row import BlockTableRow
+from .block_template import BlockTemplate
+from .block_to_do import BlockToDo
+from .block_toggle import BlockToggle
+from .block_unsupported import BlockUnsupported
+from .block_video import BlockVideo
+from .rich_text_equation import RichTextEquation
+from .rich_text_mention import RichTextMention
+from .rich_text_text import RichTextText
 
 
+# Content of a quote block.
 class Quote(BaseModel):
-    rich_text: Optional[List[RichText]] = Field(default=None, alias="rich_text")
+    children: List[Annotated[Union["BlockAudio", "BlockBookmark", "BlockBreadcrumb", "BlockBulletedListItem", "BlockCallout", "BlockChildDatabase", "BlockChildPage", "BlockCode", "BlockColumn", "BlockColumnList", "BlockDivider", "BlockEmbed", "BlockEquation", "BlockFile", "BlockHeadingFour", "BlockHeadingOne", "BlockHeadingThree", "BlockHeadingTwo", "BlockImage", "BlockLinkPreview", "BlockLinkToPage", "BlockMeetingNotes", "BlockNumberedListItem", "BlockPDF", "BlockParagraph", "BlockQuote", "BlockSyncedBlock", "BlockTab", "BlockTable", "BlockTableOfContents", "BlockTableRow", "BlockTemplate", "BlockToDo", "BlockToggle", "BlockUnsupported", "BlockVideo"], Field(discriminator="type")]] = Field(alias="children")
     color: Optional[str] = Field(default=None, alias="color")
-    children: Optional[List[Block]] = Field(default=None, alias="children")
-    pass
+    rich_text: List[Annotated[Union["RichTextEquation", "RichTextMention", "RichTextText"], Field(discriminator="type")]] = Field(alias="rich_text")
 
 

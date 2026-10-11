@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
 from .child_database import ChildDatabase
 
 
+# Child database block.
 class BlockChildDatabase(Block):
+    type: Literal["child_database"] = Field(alias="type")
     child_database: Optional[ChildDatabase] = Field(default=None, alias="child_database")
-    pass
 
 

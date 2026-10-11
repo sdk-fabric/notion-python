@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .rich_text import RichText
 from .text import Text
 
 
+# Rich text object of type text.
 class RichTextText(RichText):
+    type: Literal["text"] = Field(alias="type")
     text: Optional[Text] = Field(default=None, alias="text")
-    pass
 
 

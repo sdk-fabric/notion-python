@@ -5,11 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
+from .empty_object import EmptyObject
 
 
+# Divider block.
 class BlockDivider(Block):
-    pass
+    type: Literal["divider"] = Field(alias="type")
+    divider: Optional[EmptyObject] = Field(default=None, alias="divider")
 
 

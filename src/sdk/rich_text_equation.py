@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .rich_text import RichText
 from .equation import Equation
 
 
+# Rich text object of type equation.
 class RichTextEquation(RichText):
+    type: Literal["equation"] = Field(alias="type")
     equation: Optional[Equation] = Field(default=None, alias="equation")
-    pass
 
 

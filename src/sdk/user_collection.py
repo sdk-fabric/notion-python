@@ -5,14 +5,16 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .user import User
 
 
+# Paginated list of users.
 class UserCollection(BaseModel):
-    results: Optional[List[User]] = Field(default=None, alias="results")
-    next_cursor: Optional[str] = Field(default=None, alias="next_cursor")
     has_more: Optional[bool] = Field(default=None, alias="has_more")
-    pass
+    next_cursor: Optional[str] = Field(default=None, alias="next_cursor")
+    object: Optional[str] = Field(default=None, alias="object")
+    results: Optional[List[User]] = Field(default=None, alias="results")
+    type: Optional[str] = Field(default=None, alias="type")
 
 

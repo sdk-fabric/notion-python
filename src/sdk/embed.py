@@ -5,11 +5,16 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
+from .rich_text import RichText
+from .rich_text_equation import RichTextEquation
+from .rich_text_mention import RichTextMention
+from .rich_text_text import RichTextText
 
 
+# Content of an embed block.
 class Embed(BaseModel):
+    caption: List[Annotated[Union["RichTextEquation", "RichTextMention", "RichTextText"], Field(discriminator="type")]] = Field(alias="caption")
     url: Optional[str] = Field(default=None, alias="url")
-    pass
 
 

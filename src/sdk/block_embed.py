@@ -5,11 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
+from .embed import Embed
 
 
+# Embed block.
 class BlockEmbed(Block):
-    pass
+    type: Literal["embed"] = Field(alias="type")
+    embed: Optional[Embed] = Field(default=None, alias="embed")
 
 

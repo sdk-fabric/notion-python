@@ -5,14 +5,11 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
-from .emoji_icon import EmojiIcon
-from .file_icon import FileIcon
-from .external_icon import ExternalIcon
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 
 
+# Page, database or block icon.
 class Icon(BaseModel):
-    type: Optional[str] = Field(default=None, alias="type")
-    pass
+    type: str = Field(alias="type")
 
 

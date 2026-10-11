@@ -5,15 +5,11 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
-from .database_parent_id import DatabaseParentId
-from .page_parent_id import PageParentId
-from .block_parent_id import BlockParentId
-from .workspace_parent_id import WorkspaceParentId
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 
 
+# Information about the parent of a page, block, database, data source or comment.
 class ParentId(BaseModel):
-    type: Optional[str] = Field(default=None, alias="type")
-    pass
+    type: str = Field(alias="type")
 
 

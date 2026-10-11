@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
 from .bulleted_list_item import BulletedListItem
 
 
+# Bulleted list item block.
 class BlockBulletedListItem(Block):
+    type: Literal["bulleted_list_item"] = Field(alias="type")
     bulleted_list_item: Optional[BulletedListItem] = Field(default=None, alias="bulleted_list_item")
-    pass
 
 

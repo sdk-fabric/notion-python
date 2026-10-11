@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
 from .file import File
 
 
+# File block.
 class BlockFile(Block):
+    type: Literal["file"] = Field(alias="type")
     file: Optional[File] = Field(default=None, alias="file")
-    pass
 
 

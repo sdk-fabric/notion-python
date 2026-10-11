@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
 from .callout import Callout
 
 
+# Callout block.
 class BlockCallout(Block):
+    type: Literal["callout"] = Field(alias="type")
     callout: Optional[Callout] = Field(default=None, alias="callout")
-    pass
 
 

@@ -21,7 +21,44 @@ class UserTag(sdkgen.TagAbstract):
         super().__init__(http_client, parser)
 
 
-    def get_all(self, start_cursor: str, page_size: int) -> UserCollection:
+    def get(self, user_id: str) -> User:
+        """
+        Retrieves a User using the ID specified.
+        """
+        try:
+            path_params = {}
+            path_params['user_id'] = user_id
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/users/:user_id', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+
+
+            response = self.http_client.request('GET', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = User.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode >= 0 and statusCode <= 999:
+                data = Error.model_validate_json(json_data=response.content)
+
+                raise ErrorException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def get_all(self, page_size: int, start_cursor: str) -> UserCollection:
         """
         Returns a paginated list of Users for the workspace. The response may contain fewer than page_size of results.
         """
@@ -29,12 +66,12 @@ class UserTag(sdkgen.TagAbstract):
             path_params = {}
 
             query_params = {}
-            query_params['start_cursor'] = start_cursor
             query_params['page_size'] = page_size
+            query_params['start_cursor'] = start_cursor
 
             query_struct_names = []
 
-            url = self.parser.url('/v1/users', path_params)
+            url = self.parser.url('/users', path_params)
 
             options = {}
             options['headers'] = {}
@@ -59,19 +96,18 @@ class UserTag(sdkgen.TagAbstract):
         except RequestException as e:
             raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
 
-    def get(self, user_id: str) -> User:
+    def get_me(self) -> User:
         """
-        Retrieves a User using the ID specified.
+        Retrieves the bot User associated with the API token provided in the authorization header.
         """
         try:
             path_params = {}
-            path_params['user_id'] = user_id
 
             query_params = {}
 
             query_struct_names = []
 
-            url = self.parser.url('/v1/users/:user_id', path_params)
+            url = self.parser.url('/users/me', path_params)
 
             options = {}
             options['headers'] = {}

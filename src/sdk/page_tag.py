@@ -11,28 +11,74 @@ from typing import Dict
 from typing import Any
 from urllib.parse import parse_qs
 
+from .create_page_request import CreatePageRequest
 from .error import Error
 from .error_exception import ErrorException
+from .move_page_request import MovePageRequest
 from .page import Page
+from .page_markdown import PageMarkdown
+from .property_item import PropertyItem
+from .update_page_markdown_request import UpdatePageMarkdownRequest
+from .update_page_request import UpdatePageRequest
 
 class PageTag(sdkgen.TagAbstract):
     def __init__(self, http_client: requests.Session, parser: sdkgen.Parser):
         super().__init__(http_client, parser)
 
 
-    def get(self, page_id: str) -> Page:
+    def create(self, payload: CreatePageRequest, filter_properties: str) -> Page:
         """
-        Retrieves a Page object using the ID specified.
+        Creates a new page as a child of an existing page or data source.
+        """
+        try:
+            path_params = {}
+
+            query_params = {}
+            query_params['filter_properties'] = filter_properties
+
+            query_struct_names = []
+
+            url = self.parser.url('/pages', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['json'] = payload.model_dump(by_alias=True)
+
+            options['headers']['Content-Type'] = 'application/json'
+
+            response = self.http_client.request('POST', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = Page.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode >= 0 and statusCode <= 999:
+                data = Error.model_validate_json(json_data=response.content)
+
+                raise ErrorException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def get(self, page_id: str, filter_properties: str) -> Page:
+        """
+        Retrieves a Page object using the ID specified. To read page content, use Retrieve block children.
         """
         try:
             path_params = {}
             path_params['page_id'] = page_id
 
             query_params = {}
+            query_params['filter_properties'] = filter_properties
 
             query_struct_names = []
 
-            url = self.parser.url('/v1/pages/:page_id', path_params)
+            url = self.parser.url('/pages/:page_id', path_params)
 
             options = {}
             options['headers'] = {}
@@ -57,18 +103,97 @@ class PageTag(sdkgen.TagAbstract):
         except RequestException as e:
             raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
 
-    def create(self, payload: Page) -> Page:
+    def get_markdown(self, page_id: str, include_transcript: bool) -> PageMarkdown:
         """
-        Creates a new page that is a child of an existing page or database.
+        Retrieves the content of a page rendered as enhanced markdown.
         """
         try:
             path_params = {}
+            path_params['page_id'] = page_id
+
+            query_params = {}
+            query_params['include_transcript'] = include_transcript
+
+            query_struct_names = []
+
+            url = self.parser.url('/pages/:page_id/markdown', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+
+
+            response = self.http_client.request('GET', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = PageMarkdown.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode >= 0 and statusCode <= 999:
+                data = Error.model_validate_json(json_data=response.content)
+
+                raise ErrorException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def get_property(self, page_id: str, property_id: str, page_size: int, start_cursor: str) -> PropertyItem:
+        """
+        Retrieves a page property item. Paginated for title, rich_text, relation, people and rollup properties.
+        """
+        try:
+            path_params = {}
+            path_params['page_id'] = page_id
+            path_params['property_id'] = property_id
+
+            query_params = {}
+            query_params['page_size'] = page_size
+            query_params['start_cursor'] = start_cursor
+
+            query_struct_names = []
+
+            url = self.parser.url('/pages/:page_id/properties/:property_id', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+
+
+            response = self.http_client.request('GET', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = PropertyItem.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode >= 0 and statusCode <= 999:
+                data = Error.model_validate_json(json_data=response.content)
+
+                raise ErrorException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def move(self, page_id: str, payload: MovePageRequest) -> Page:
+        """
+        Moves an existing page to a new parent page or data source.
+        """
+        try:
+            path_params = {}
+            path_params['page_id'] = page_id
 
             query_params = {}
 
             query_struct_names = []
 
-            url = self.parser.url('/v1/pages', path_params)
+            url = self.parser.url('/pages/:page_id/move', path_params)
 
             options = {}
             options['headers'] = {}
@@ -82,6 +207,85 @@ class PageTag(sdkgen.TagAbstract):
 
             if response.status_code >= 200 and response.status_code < 300:
                 data = Page.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode >= 0 and statusCode <= 999:
+                data = Error.model_validate_json(json_data=response.content)
+
+                raise ErrorException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def update(self, page_id: str, payload: UpdatePageRequest, filter_properties: str) -> Page:
+        """
+        Updates page properties, icon, cover, lock state or trash status (in_trash).
+        """
+        try:
+            path_params = {}
+            path_params['page_id'] = page_id
+
+            query_params = {}
+            query_params['filter_properties'] = filter_properties
+
+            query_struct_names = []
+
+            url = self.parser.url('/pages/:page_id', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['json'] = payload.model_dump(by_alias=True)
+
+            options['headers']['Content-Type'] = 'application/json'
+
+            response = self.http_client.request('PATCH', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = Page.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode >= 0 and statusCode <= 999:
+                data = Error.model_validate_json(json_data=response.content)
+
+                raise ErrorException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def update_markdown(self, page_id: str, payload: UpdatePageMarkdownRequest) -> PageMarkdown:
+        """
+        Updates or replaces content in a page using enhanced markdown.
+        """
+        try:
+            path_params = {}
+            path_params['page_id'] = page_id
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/pages/:page_id/markdown', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['json'] = payload.model_dump(by_alias=True)
+
+            options['headers']['Content-Type'] = 'application/json'
+
+            response = self.http_client.request('PATCH', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = PageMarkdown.model_validate_json(json_data=response.content)
 
                 return data
 

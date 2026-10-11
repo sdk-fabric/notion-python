@@ -5,13 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
 from .numbered_list_item import NumberedListItem
 
 
+# Numbered list item block.
 class BlockNumberedListItem(Block):
+    type: Literal["numbered_list_item"] = Field(alias="type")
     numbered_list_item: Optional[NumberedListItem] = Field(default=None, alias="numbered_list_item")
-    pass
 
 

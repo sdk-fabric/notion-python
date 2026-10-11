@@ -5,13 +5,13 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .link import Link
 
 
+# Text content of a rich text object of type text.
 class Text(BaseModel):
     content: Optional[str] = Field(default=None, alias="content")
     link: Optional[Link] = Field(default=None, alias="link")
-    pass
 
 

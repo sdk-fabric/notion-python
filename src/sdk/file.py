@@ -5,15 +5,23 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .rich_text import RichText
+from .external_object import ExternalObject
 from .file_object import FileObject
+from .id_reference import IdReference
+from .rich_text_equation import RichTextEquation
+from .rich_text_mention import RichTextMention
+from .rich_text_text import RichTextText
 
 
+# File object used by image, video, pdf, file and audio blocks, and by files property values.
 class File(BaseModel):
-    caption: Optional[List[RichText]] = Field(default=None, alias="caption")
+    caption: List[Annotated[Union["RichTextEquation", "RichTextMention", "RichTextText"], Field(discriminator="type")]] = Field(alias="caption")
+    external: Optional[ExternalObject] = Field(default=None, alias="external")
     file: Optional[FileObject] = Field(default=None, alias="file")
+    file_upload: Optional[IdReference] = Field(default=None, alias="file_upload")
     name: Optional[str] = Field(default=None, alias="name")
-    pass
+    type: Optional[str] = Field(default=None, alias="type")
 
 

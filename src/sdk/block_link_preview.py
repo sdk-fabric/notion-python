@@ -5,12 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
+from .block import Block
 from .link_preview import LinkPreview
 
 
-class BlockLinkPreview(BaseModel):
+# Link preview block (read-only).
+class BlockLinkPreview(Block):
+    type: Literal["link_preview"] = Field(alias="type")
     link_preview: Optional[LinkPreview] = Field(default=None, alias="link_preview")
-    pass
 
 

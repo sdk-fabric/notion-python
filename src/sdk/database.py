@@ -5,23 +5,47 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 import datetime
-from .database_icon import DatabaseIcon
-from .database_cover import DatabaseCover
-from .database_title import DatabaseTitle
+from .cover import Cover
+from .data_source_reference import DataSourceReference
+from .rich_text import RichText
+from .icon import Icon
+from .parent_id import ParentId
+from .rich_text_equation import RichTextEquation
+from .rich_text_mention import RichTextMention
+from .rich_text_text import RichTextText
+from .custom_emoji_icon import CustomEmojiIcon
+from .emoji_icon import EmojiIcon
+from .external_icon import ExternalIcon
+from .file_icon import FileIcon
+from .file_upload_icon import FileUploadIcon
+from .noticon_icon import NoticonIcon
+from .agent_parent_id import AgentParentId
+from .block_parent_id import BlockParentId
+from .data_source_parent_id import DataSourceParentId
+from .database_parent_id import DatabaseParentId
+from .page_parent_id import PageParentId
+from .workspace_parent_id import WorkspaceParentId
 
 
+# A database: a container for one or more data sources.
 class Database(BaseModel):
-    object: Optional[str] = Field(default=None, alias="object")
-    id: Optional[str] = Field(default=None, alias="id")
+    cover: Optional[Cover] = Field(default=None, alias="cover")
     created_time: Optional[datetime.datetime] = Field(default=None, alias="created_time")
+    data_sources: Optional[List[DataSourceReference]] = Field(default=None, alias="data_sources")
+    database_type: Optional[str] = Field(default=None, alias="database_type")
+    description: List[Annotated[Union["RichTextEquation", "RichTextMention", "RichTextText"], Field(discriminator="type")]] = Field(alias="description")
+    icon: Annotated[Union["CustomEmojiIcon", "EmojiIcon", "ExternalIcon", "FileIcon", "FileUploadIcon", "NoticonIcon"], Field(discriminator="type")] = Field(alias="icon")
+    id: Optional[str] = Field(default=None, alias="id")
+    in_trash: Optional[bool] = Field(default=None, alias="in_trash")
+    is_inline: Optional[bool] = Field(default=None, alias="is_inline")
+    is_locked: Optional[bool] = Field(default=None, alias="is_locked")
     last_edited_time: Optional[datetime.datetime] = Field(default=None, alias="last_edited_time")
-    icon: Optional[DatabaseIcon] = Field(default=None, alias="icon")
-    cover: Optional[DatabaseCover] = Field(default=None, alias="cover")
+    object: Optional[str] = Field(default=None, alias="object")
+    parent: Annotated[Union["AgentParentId", "BlockParentId", "DataSourceParentId", "DatabaseParentId", "PageParentId", "WorkspaceParentId"], Field(discriminator="type")] = Field(alias="parent")
+    public_url: Optional[str] = Field(default=None, alias="public_url")
+    title: List[Annotated[Union["RichTextEquation", "RichTextMention", "RichTextText"], Field(discriminator="type")]] = Field(alias="title")
     url: Optional[str] = Field(default=None, alias="url")
-    title: Optional[List[DatabaseTitle]] = Field(default=None, alias="title")
-    description: Optional[List[DatabaseTitle]] = Field(default=None, alias="description")
-    pass
 
 

@@ -5,16 +5,14 @@ https://sdkgen.app
 
 from pydantic import BaseModel, Field, GetCoreSchemaHandler, Tag
 from pydantic_core import CoreSchema, core_schema
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Annotated, Union, Literal
 from .block import Block
-from .pdf import PDF
-from .pdf_external import PDFExternal
-from .pdf_file import PDFFile
+from .file import File
 
 
+# PDF block.
 class BlockPDF(Block):
-    pdf: Optional[Annotated[Union[Annotated[PDFExternal, Tag('external')], Annotated[PDFFile, Tag('file')]], Field(discriminator='type')]
-] = Field(default=None, alias="pdf")
-    pass
+    type: Literal["pdf"] = Field(alias="type")
+    pdf: Optional[File] = Field(default=None, alias="pdf")
 
 
